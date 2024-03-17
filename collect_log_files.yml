@@ -1,0 +1,29 @@
+---
+- hosts: manage
+  become: true
+  tasks:
+
+  - name: Create directory
+    ansible.builtin.file:
+      path: /home/kazuki/sample
+      state: directory
+      owner: kazuki
+      group: users
+      mode: '0644'
+
+  - name: Update Ubuntu
+    apt:
+      update_cache: yes
+      state: present
+
+  - name: Collect log files from control node
+    ansible.builtin.copy:
+      src: "{{ item }}"
+      dest: /home/kazuki/sample
+    loop:
+      - /var/log/boot.log.1
+      - /var/log/boot.log.2
+      - /var/log/boot.log.3
+      - /var/log/boot.log.4
+      - /var/log/boot.log.5
+
